@@ -24,8 +24,13 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2">
-              <LinkIcon size={24} className="text-primary-light dark:text-primary-dark" />
-              <span className="text-xl font-bold text-text-light dark:text-text-dark">ReferralTree</span>
+              <LinkIcon
+                size={24}
+                className="text-primary-light dark:text-primary-dark"
+              />
+              <span className="text-xl font-bold text-text-light dark:text-text-dark">
+                ReferralTree
+              </span>
             </Link>
             <div className="flex items-center gap-4">
               <ThemeToggle />
@@ -56,29 +61,32 @@ const LandingPage: React.FC = () => {
           <div className="relative max-w-xl mx-auto">
             {submitted ? (
               <div className="bg-green-50/80 dark:bg-green-900/20 backdrop-blur-sm text-green-600 dark:text-green-400 px-6 py-4 rounded-lg mb-8">
-                Thanks for your interest! We'll keep you updated on our progress.
+                Thanks for your interest! We'll keep you updated on our
+                progress.
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 mb-8">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-lg border border-border-light dark:border-border-dark bg-card-light/80 dark:bg-card-dark/80 backdrop-blur-sm text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-primary-light to-primary-light/90 dark:from-primary-dark dark:to-primary-dark/90 hover:opacity-90 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-primary-light/20 dark:shadow-primary-dark/20"
-                >
-                  <span>Get Updates</span>
-                  <ArrowRight size={18} />
-                </button>
-              </form>
+              <></>
+              // <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 mb-8">
+              //   <input
+              //     type="email"
+              //     value={email}
+              //     onChange={(e) => setEmail(e.target.value)}
+              //     placeholder="Enter your email"
+              //     className="flex-1 px-4 py-3 rounded-lg border border-border-light dark:border-border-dark bg-card-light/80 dark:bg-card-dark/80 backdrop-blur-sm text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark"
+              //     required
+              //   />
+              //   <button
+              //     type="submit"
+              //     className="px-6 py-3 bg-gradient-to-r from-primary-light to-primary-light/90 dark:from-primary-dark dark:to-primary-dark/90 hover:opacity-90 text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-primary-light/20 dark:shadow-primary-dark/20"
+              //   >
+              //     <span>Get Updates</span>
+              //     <ArrowRight size={18} />
+              //   </button>
+              // </form>
             )}
             <p className="text-sm text-muted-light dark:text-muted-dark">
-              Be the first to know when we launch. No spam, just important updates.
+              Be the first to know when we launch. No spam, just important
+              updates.
             </p>
           </div>
         </div>
@@ -89,7 +97,10 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
-              <LinkIcon size={20} className="text-primary-light dark:text-primary-dark" />
+              <LinkIcon
+                size={20}
+                className="text-primary-light dark:text-primary-dark"
+              />
               <span className="text-sm font-medium text-text-light dark:text-text-dark">
                 ReferralTree
               </span>

@@ -1,12 +1,23 @@
 import React, { useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { Link as LinkIcon, ArrowRight, ArrowLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
 const PrivyAuth: React.FC = () => {
   const { login, authenticated, ready } = usePrivy();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const accessKey = queryParams.get('accessKey');
+
+    if (accessKey !== 'itskkomarefs') {
+      // Redirect to a different page if the access key is not present or incorrect
+      navigate('/unauthorized');
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     if (ready && authenticated) {
@@ -30,7 +41,9 @@ const PrivyAuth: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary-light dark:border-primary-dark border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-light dark:text-muted-dark">You're authenticated! Redirecting...</p>
+          <p className="text-muted-light dark:text-muted-dark">
+            You're authenticated! Redirecting...
+          </p>
         </div>
       </div>
     );
@@ -48,11 +61,19 @@ const PrivyAuth: React.FC = () => {
                 className="p-2 hover:bg-background-light dark:hover:bg-background-dark rounded-md transition-colors"
                 aria-label="Go back"
               >
-                <ArrowLeft size={20} className="text-text-light dark:text-text-dark" />
+                <ArrowLeft
+                  size={20}
+                  className="text-text-light dark:text-text-dark"
+                />
               </button>
               <Link to="/" className="flex items-center gap-2">
-                <LinkIcon size={24} className="text-primary-light dark:text-primary-dark" />
-                <span className="text-xl font-bold text-text-light dark:text-text-dark">ReferralTree</span>
+                <LinkIcon
+                  size={24}
+                  className="text-primary-light dark:text-primary-dark"
+                />
+                <span className="text-xl font-bold text-text-light dark:text-text-dark">
+                  ReferralTree
+                </span>
               </Link>
             </div>
             <ThemeToggle />
@@ -79,11 +100,17 @@ const PrivyAuth: React.FC = () => {
             <div className="mt-6">
               <p className="text-sm text-muted-light dark:text-muted-dark">
                 By signing in, you agree to our{' '}
-                <a href="/terms" className="text-primary-light dark:text-primary-dark hover:underline">
+                <a
+                  href="/terms"
+                  className="text-primary-light dark:text-primary-dark hover:underline"
+                >
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="/privacy" className="text-primary-light dark:text-primary-dark hover:underline">
+                <a
+                  href="/privacy"
+                  className="text-primary-light dark:text-primary-dark hover:underline"
+                >
                   Privacy Policy
                 </a>
               </p>
@@ -98,16 +125,20 @@ const PrivyAuth: React.FC = () => {
           {/* Hero Section */}
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold text-text-light dark:text-text-dark mb-6">
-              Share. Connect. <span className="text-primary-light dark:text-primary-dark">Earn.</span>
+              Share. Connect.{' '}
+              <span className="text-primary-light dark:text-primary-dark">
+                Earn.
+              </span>
             </h2>
             <p className="text-xl text-muted-light dark:text-muted-dark max-w-2xl mx-auto">
-              Join thousands of creators sharing their favorite products and earning rewards through ReferralTree.
+              Join thousands of creators sharing their favorite products and
+              earning rewards through ReferralTree.
             </p>
           </div>
 
           {/* Main Image */}
           <div className="relative w-full aspect-[16/9] mb-16">
-            <img 
+            <img
               src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2400&q=80"
               alt="Dashboard Preview"
               className="w-full h-full object-cover rounded-2xl shadow-2xl"
@@ -119,25 +150,34 @@ const PrivyAuth: React.FC = () => {
           <div className="grid grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center mx-auto mb-4">
-                <LinkIcon size={28} className="text-primary-light dark:text-primary-dark" />
+                <LinkIcon
+                  size={28}
+                  className="text-primary-light dark:text-primary-dark"
+                />
               </div>
               <h3 className="text-lg font-semibold text-text-light dark:text-text-dark mb-2">
                 Organize Links
               </h3>
               <p className="text-sm text-muted-light dark:text-muted-dark">
-                Keep all your referral links organized and easy to share from one place.
+                Keep all your referral links organized and easy to share from
+                one place.
               </p>
             </div>
 
             <div className="text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center mx-auto mb-4">
-                <svg 
+                <svg
                   className="w-7 h-7 text-primary-light dark:text-primary-dark"
-                  fill="none" 
-                  stroke="currentColor" 
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-text-light dark:text-text-dark mb-2">
@@ -150,13 +190,18 @@ const PrivyAuth: React.FC = () => {
 
             <div className="text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center mx-auto mb-4">
-                <svg 
+                <svg
                   className="w-7 h-7 text-primary-light dark:text-primary-dark"
-                  fill="none" 
-                  stroke="currentColor" 
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-text-light dark:text-text-dark mb-2">

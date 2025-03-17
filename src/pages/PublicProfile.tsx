@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Search, Twitter, Instagram, Linkedin, Globe, Copy, Settings, Plus, Eye, EyeOff, Tags, Edit, LayoutDashboard } from 'lucide-react';
+import {
+  Search,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Globe,
+  Copy,
+  Settings,
+  Plus,
+  Eye,
+  EyeOff,
+  Tags,
+  Edit,
+  LayoutDashboard,
+} from 'lucide-react';
 import ReferralCard from '../components/ReferralCard';
 import { ReferralData, UserProfile } from '../types';
 import { supabase } from '../lib/supabase';
@@ -16,7 +30,11 @@ interface PublicProfileProps {
   setReferrals: React.Dispatch<React.SetStateAction<ReferralData[]>>;
 }
 
-const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, setReferrals }) => {
+const PublicProfile: React.FC<PublicProfileProps> = ({
+  referrals,
+  currentUser,
+  setReferrals,
+}) => {
   const { username } = useParams<{ username: string }>();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTag, setActiveTag] = useState<string>('');
@@ -26,21 +44,23 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
   const [isGuestView, setIsGuestView] = useState(false);
   const [showReferralModal, setShowReferralModal] = useState(false);
   const [showTagModal, setShowTagModal] = useState(false);
-  const [editingReferral, setEditingReferral] = useState<ReferralData | null>(null);
+  const [editingReferral, setEditingReferral] = useState<ReferralData | null>(
+    null
+  );
   const [previewColors, setPreviewColors] = useState({
     primary: currentUser?.primaryColor || '#7b68ee',
     secondary: currentUser?.secondaryColor || '#2b2d42',
     body: currentUser?.bodyColor || '#f7f9fb',
-    card: currentUser?.cardColor || '#ffffff'
+    card: currentUser?.cardColor || '#ffffff',
   });
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!username) return;
-      
+
       setLoading(true);
-      
+
       try {
         if (currentUser && currentUser.username === username) {
           setProfile(currentUser);
@@ -48,15 +68,16 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
             primary: currentUser.primaryColor || '#7b68ee',
             secondary: currentUser.secondaryColor || '#2b2d42',
             body: currentUser.bodyColor || '#f7f9fb',
-            card: currentUser.cardColor || '#ffffff'
+            card: currentUser.cardColor || '#ffffff',
           });
           setLoading(false);
           return;
         }
-        
+
         const { data, error } = await supabase
           .from('profiles')
-          .select(`
+          .select(
+            `
             id,
             username,
             bio,
@@ -69,21 +90,24 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
             instagram,
             linkedin,
             website
-          `)
+          `
+          )
           .eq('username', username)
           .maybeSingle();
-        
+
         if (error) {
           console.error('Error fetching profile:', error);
           setLoading(false);
           return;
         }
-        
+
         if (data) {
           const userProfile: UserProfile = {
             id: data.id,
             username: data.username,
-            bio: data.bio || 'Tech enthusiast sharing my favorite products and services.',
+            bio:
+              data.bio ||
+              'Tech enthusiast sharing my favorite products and services.',
             avatarUrl: data.avatar_url || '',
             primaryColor: data.primary_color || '#7b68ee',
             secondaryColor: data.secondary_color || '#2b2d42',
@@ -93,16 +117,16 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
               twitter: data.twitter || '',
               instagram: data.instagram || '',
               linkedin: data.linkedin || '',
-              website: data.website || ''
-            }
+              website: data.website || '',
+            },
           };
-          
+
           setProfile(userProfile);
           setPreviewColors({
             primary: userProfile.primaryColor || '#7b68ee',
             secondary: userProfile.secondaryColor || '#2b2d42',
             body: userProfile.bodyColor || '#f7f9fb',
-            card: userProfile.cardColor || '#ffffff'
+            card: userProfile.cardColor || '#ffffff',
           });
 
           // Update meta tags for social sharing
@@ -114,7 +138,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
         setLoading(false);
       }
     };
-    
+
     fetchProfile();
   }, [username, currentUser]);
 
@@ -131,25 +155,55 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
 
     // Update OG meta tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
-    const ogDescription = document.querySelector('meta[property="og:description"]');
+    const ogDescription = document.querySelector(
+      'meta[property="og:description"]'
+    );
     const ogImage = document.querySelector('meta[property="og:image"]');
     const ogUrl = document.querySelector('meta[property="og:url"]');
 
-    if (ogTitle) ogTitle.setAttribute('content', `${profile.username} on ReferralTree`);
+    if (ogTitle)
+      ogTitle.setAttribute('content', `${profile.username} on ReferralTree`);
     if (ogDescription) ogDescription.setAttribute('content', profile.bio);
-    if (ogImage) ogImage.setAttribute('content', profile.avatarUrl || 'https://referraltree.com/default-og-image.jpg');
-    if (ogUrl) ogUrl.setAttribute('content', `https://referraltree.com/${profile.username}`);
+    if (ogImage)
+      ogImage.setAttribute(
+        'content',
+        profile.avatarUrl || 'https://referraltree.com/default-og-image.jpg'
+      );
+    if (ogUrl)
+      ogUrl.setAttribute(
+        'content',
+        `https://referraltree.com/${profile.username}`
+      );
 
     // Update Twitter meta tags
-    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
-    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
-    const twitterImage = document.querySelector('meta[property="twitter:image"]');
+    const twitterTitle = document.querySelector(
+      'meta[property="twitter:title"]'
+    );
+    const twitterDescription = document.querySelector(
+      'meta[property="twitter:description"]'
+    );
+    const twitterImage = document.querySelector(
+      'meta[property="twitter:image"]'
+    );
     const twitterUrl = document.querySelector('meta[property="twitter:url"]');
 
-    if (twitterTitle) twitterTitle.setAttribute('content', `${profile.username} on ReferralTree`);
-    if (twitterDescription) twitterDescription.setAttribute('content', profile.bio);
-    if (twitterImage) twitterImage.setAttribute('content', profile.avatarUrl || 'https://referraltree.com/default-og-image.jpg');
-    if (twitterUrl) twitterUrl.setAttribute('content', `https://referraltree.com/${profile.username}`);
+    if (twitterTitle)
+      twitterTitle.setAttribute(
+        'content',
+        `${profile.username} on ReferralTree`
+      );
+    if (twitterDescription)
+      twitterDescription.setAttribute('content', profile.bio);
+    if (twitterImage)
+      twitterImage.setAttribute(
+        'content',
+        profile.avatarUrl || 'https://referraltree.com/default-og-image.jpg'
+      );
+    if (twitterUrl)
+      twitterUrl.setAttribute(
+        'content',
+        `https://referraltree.com/${profile.username}`
+      );
   };
 
   // Clean up meta tags when component unmounts
@@ -157,72 +211,105 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
     return () => {
       // Reset meta tags to default values
       document.title = 'ReferralTree - Share Your Favorite Products';
-      
-      const metaDescription = document.querySelector('meta[name="description"]');
+
+      const metaDescription = document.querySelector(
+        'meta[name="description"]'
+      );
       if (metaDescription) {
-        metaDescription.setAttribute('content', 'Share your favorite products and services, track referrals, and earn rewards with ReferralTree.');
+        metaDescription.setAttribute(
+          'content',
+          'Share your favorite products and services, track referrals, and earn rewards with ReferralTree.'
+        );
       }
 
       // Reset OG meta tags
       const ogTitle = document.querySelector('meta[property="og:title"]');
-      const ogDescription = document.querySelector('meta[property="og:description"]');
+      const ogDescription = document.querySelector(
+        'meta[property="og:description"]'
+      );
       const ogImage = document.querySelector('meta[property="og:image"]');
       const ogUrl = document.querySelector('meta[property="og:url"]');
 
       if (ogTitle) ogTitle.setAttribute('content', 'ReferralTree');
-      if (ogDescription) ogDescription.setAttribute('content', 'Share your favorite products and services, track referrals, and earn rewards.');
-      if (ogImage) ogImage.setAttribute('content', 'https://referraltree.com/default-og-image.jpg');
+      if (ogDescription)
+        ogDescription.setAttribute(
+          'content',
+          'Share your favorite products and services, track referrals, and earn rewards.'
+        );
+      if (ogImage)
+        ogImage.setAttribute(
+          'content',
+          'https://referraltree.com/default-og-image.jpg'
+        );
       if (ogUrl) ogUrl.setAttribute('content', 'https://referraltree.com');
 
       // Reset Twitter meta tags
-      const twitterTitle = document.querySelector('meta[property="twitter:title"]');
-      const twitterDescription = document.querySelector('meta[property="twitter:description"]');
-      const twitterImage = document.querySelector('meta[property="twitter:image"]');
+      const twitterTitle = document.querySelector(
+        'meta[property="twitter:title"]'
+      );
+      const twitterDescription = document.querySelector(
+        'meta[property="twitter:description"]'
+      );
+      const twitterImage = document.querySelector(
+        'meta[property="twitter:image"]'
+      );
       const twitterUrl = document.querySelector('meta[property="twitter:url"]');
 
       if (twitterTitle) twitterTitle.setAttribute('content', 'ReferralTree');
-      if (twitterDescription) twitterDescription.setAttribute('content', 'Share your favorite products and services, track referrals, and earn rewards.');
-      if (twitterImage) twitterImage.setAttribute('content', 'https://referraltree.com/default-og-image.jpg');
-      if (twitterUrl) twitterUrl.setAttribute('content', 'https://referraltree.com');
+      if (twitterDescription)
+        twitterDescription.setAttribute(
+          'content',
+          'Share your favorite products and services, track referrals, and earn rewards.'
+        );
+      if (twitterImage)
+        twitterImage.setAttribute(
+          'content',
+          'https://referraltree.com/default-og-image.jpg'
+        );
+      if (twitterUrl)
+        twitterUrl.setAttribute('content', 'https://referraltree.com');
     };
   }, []);
 
   const handleColorChange = async (newColors: typeof previewColors) => {
     if (profile?.id === currentUser.id) {
       try {
-        const { data, error } = await supabase
-          .rpc('update_profile_v2', {
-            p_profile_id: profile.id,
-            p_primary_color: newColors.primary,
-            p_secondary_color: newColors.secondary,
-            p_body_color: newColors.body,
-            p_card_color: newColors.card
-          });
+        const { data, error } = await supabase.rpc('update_profile_v2', {
+          p_profile_id: profile.id,
+          p_primary_color: newColors.primary,
+          p_secondary_color: newColors.secondary,
+          p_body_color: newColors.body,
+          p_card_color: newColors.card,
+        });
 
         if (error) {
           throw error;
         }
 
         setPreviewColors(newColors);
-        setProfile(prev => prev ? {
-          ...prev,
-          primaryColor: newColors.primary,
-          secondaryColor: newColors.secondary,
-          bodyColor: newColors.body,
-          cardColor: newColors.card
-        } : null);
+        setProfile((prev) =>
+          prev
+            ? {
+                ...prev,
+                primaryColor: newColors.primary,
+                secondaryColor: newColors.secondary,
+                bodyColor: newColors.body,
+                cardColor: newColors.card,
+              }
+            : null
+        );
 
         toast.success('Colors updated successfully!');
       } catch (error) {
         console.error('Error updating colors:', error);
         toast.error('Failed to update colors');
-        
+
         if (profile) {
           const originalColors = {
             primary: profile.primaryColor || '#7b68ee',
             secondary: profile.secondaryColor || '#2b2d42',
             body: profile.bodyColor || '#f7f9fb',
-            card: profile.cardColor || '#ffffff'
+            card: profile.cardColor || '#ffffff',
           };
           setPreviewColors(originalColors);
         }
@@ -240,7 +327,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
         primary: profile.primaryColor || '#7b68ee',
         secondary: profile.secondaryColor || '#2b2d42',
         body: profile.bodyColor || '#f7f9fb',
-        card: profile.cardColor || '#ffffff'
+        card: profile.cardColor || '#ffffff',
       };
       setPreviewColors(originalColors);
     }
@@ -264,7 +351,8 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
     if (profile) {
       const { data, error } = await supabase
         .from('referrals')
-        .select(`
+        .select(
+          `
           *,
           referral_tags (
             tag: tags (
@@ -272,7 +360,8 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
               name
             )
           )
-        `)
+        `
+        )
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false });
 
@@ -281,7 +370,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
         return;
       }
 
-      const updatedReferrals = data.map(item => ({
+      const updatedReferrals = data.map((item) => ({
         id: item.id,
         title: item.title,
         description: item.description || '',
@@ -291,9 +380,9 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
         isExpanded: false,
         userId: item.user_id,
         tags: item.referral_tags
-          .map(rt => rt.tag)
+          .map((rt) => rt.tag)
           .filter(Boolean)
-          .sort((a, b) => a.name.localeCompare(b.name))
+          .sort((a, b) => a.name.localeCompare(b.name)),
       }));
 
       setReferrals(updatedReferrals);
@@ -301,12 +390,12 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
   };
 
   const toggleExpand = (id: string) => {
-    const updatedReferrals = referrals.map(ref => 
+    const updatedReferrals = referrals.map((ref) =>
       ref.id === id ? { ...ref, isExpanded: !ref.isExpanded } : ref
     );
     setReferrals(updatedReferrals);
   };
-  
+
   const handleCopyLink = (url: string) => {
     navigator.clipboard.writeText(url);
     toast.success('Link copied to clipboard!');
@@ -314,10 +403,18 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: previewColors.body }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: previewColors.body }}
+      >
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: previewColors.primary }}></div>
-          <p className="text-muted-light dark:text-muted-dark">Loading profile...</p>
+          <div
+            className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+            style={{ borderColor: previewColors.primary }}
+          ></div>
+          <p className="text-muted-light dark:text-muted-dark">
+            Loading profile...
+          </p>
         </div>
       </div>
     );
@@ -326,31 +423,45 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
   if (!profile) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-text-light dark:text-text-dark mb-4">User not found</h1>
-        <p className="text-muted-light dark:text-muted-dark">The user "{username}" does not exist or has not created a profile yet.</p>
-        <button 
-          onClick={() => navigate('/admin')}
+        <h1 className="text-2xl font-bold text-text-light dark:text-text-dark mb-4">
+          User not found
+        </h1>
+        <p className="text-muted-light dark:text-muted-dark">
+          The user "{username}" does not exist or has not created a profile yet.
+        </p>
+        <button
+          onClick={() => navigate('/')}
           className="mt-6 px-4 py-2 bg-primary-light dark:bg-primary-dark hover:bg-opacity-90 text-white rounded-md transition-colors"
         >
-          Go to Dashboard
+          Go Home
         </button>
       </div>
     );
   }
 
   const isOwnProfile = currentUser && currentUser.id === profile.id;
-  const userReferrals = profile ? referrals.filter(ref => ref.userId === profile.id) : [];
-  const uniqueTags = Array.from(new Set(userReferrals.flatMap(ref => ref.tags.map(tag => tag.name))));
-  
-  const filteredReferrals = userReferrals.filter(ref => 
-    (ref.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ref.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ref.tags.some(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()))) &&
-    (activeTag === '' || ref.tags.some(tag => tag.name === activeTag))
+  const userReferrals = profile
+    ? referrals.filter((ref) => ref.userId === profile.id)
+    : [];
+  const uniqueTags = Array.from(
+    new Set(userReferrals.flatMap((ref) => ref.tags.map((tag) => tag.name)))
+  );
+
+  const filteredReferrals = userReferrals.filter(
+    (ref) =>
+      (ref.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        ref.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        ref.tags.some((tag) =>
+          tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )) &&
+      (activeTag === '' || ref.tags.some((tag) => tag.name === activeTag))
   );
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: previewColors.body }}>
+    <div
+      className="min-h-screen relative"
+      style={{ backgroundColor: previewColors.body }}
+    >
       {/* Guest View Toggle - Absolute positioned */}
       {isOwnProfile && (
         <button
@@ -365,8 +476,8 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
       <div className="container mx-auto px-4 py-12 max-w-3xl text-center">
         <div className="flex flex-col items-center gap-6">
           {profile.avatarUrl ? (
-            <img 
-              src={profile.avatarUrl} 
+            <img
+              src={profile.avatarUrl}
               alt={profile.username}
               className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md"
             />
@@ -375,16 +486,26 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
               {profile.username.charAt(0).toUpperCase()}
             </div>
           )}
-          
+
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-3" style={{ color: previewColors.secondary }}>{profile.username}</h1>
-            <p className="text-sm mb-4 max-w-2xl mx-auto" style={{ color: previewColors.secondary }}>{profile.bio}</p>
-            
+            <h1
+              className="text-3xl font-bold mb-3"
+              style={{ color: previewColors.secondary }}
+            >
+              {profile.username}
+            </h1>
+            <p
+              className="text-sm mb-4 max-w-2xl mx-auto"
+              style={{ color: previewColors.secondary }}
+            >
+              {profile.bio}
+            </p>
+
             <div className="flex flex-wrap justify-center gap-4 mb-4">
               {profile.socialLinks.twitter && (
-                <a 
-                  href={profile.socialLinks.twitter} 
-                  target="_blank" 
+                <a
+                  href={profile.socialLinks.twitter}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-muted-light dark:text-muted-dark hover:text-text-light dark:hover:text-text-dark"
                 >
@@ -392,11 +513,11 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
                   <span>Twitter</span>
                 </a>
               )}
-              
+
               {profile.socialLinks.instagram && (
-                <a 
-                  href={profile.socialLinks.instagram} 
-                  target="_blank" 
+                <a
+                  href={profile.socialLinks.instagram}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-muted-light dark:text-muted-dark hover:text-text-light dark:hover:text-text-dark"
                 >
@@ -404,11 +525,11 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
                   <span>Instagram</span>
                 </a>
               )}
-              
+
               {profile.socialLinks.linkedin && (
-                <a 
-                  href={profile.socialLinks.linkedin} 
-                  target="_blank" 
+                <a
+                  href={profile.socialLinks.linkedin}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-muted-light dark:text-muted-dark hover:text-text-light dark:hover:text-text-dark"
                 >
@@ -416,11 +537,11 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
                   <span>LinkedIn</span>
                 </a>
               )}
-              
+
               {profile.socialLinks.website && (
-                <a 
-                  href={profile.socialLinks.website} 
-                  target="_blank" 
+                <a
+                  href={profile.socialLinks.website}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-muted-light dark:text-muted-dark hover:text-text-light dark:hover:text-text-dark"
                 >
@@ -460,7 +581,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
           </div>
         </div>
       </div>
-      
+
       <main className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="flex justify-end items-center gap-3 mb-4">
           {isOwnProfile && !isGuestView && (
@@ -486,51 +607,64 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
         )}
 
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h2 className="text-2xl font-bold" style={{ color: previewColors.secondary }}>
+          <h2
+            className="text-2xl font-bold"
+            style={{ color: previewColors.secondary }}
+          >
             {profile.username}'s Referrals
             <span className="ml-2 text-sm font-normal text-muted-light dark:text-muted-dark">
               ({userReferrals.length})
             </span>
           </h2>
-          
+
           <div className="relative w-full md:w-64">
             <input
               type="text"
               placeholder="Search referrals..."
               className="pl-10 pr-4 py-2 rounded-md border border-border-light dark:border-border-dark focus:outline-none focus:ring-2 w-full"
-              style={{ 
+              style={{
                 backgroundColor: previewColors.card,
                 borderColor: `${previewColors.primary}33`,
-                color: previewColors.secondary
+                color: previewColors.secondary,
               }}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Search className="absolute left-3 top-2.5 text-muted-light dark:text-muted-dark" size={18} />
+            <Search
+              className="absolute left-3 top-2.5 text-muted-light dark:text-muted-dark"
+              size={18}
+            />
           </div>
         </div>
-        
+
         {uniqueTags.length > 0 && (
           <div className="mb-6 overflow-x-auto">
             <div className="flex gap-2 min-w-max pb-2">
               <button
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors`}
                 style={{
-                  backgroundColor: activeTag === '' ? previewColors.primary : previewColors.card,
-                  color: activeTag === '' ? '#ffffff' : previewColors.secondary
+                  backgroundColor:
+                    activeTag === ''
+                      ? previewColors.primary
+                      : previewColors.card,
+                  color: activeTag === '' ? '#ffffff' : previewColors.secondary,
                 }}
                 onClick={() => setActiveTag('')}
               >
                 All
               </button>
-              
-              {uniqueTags.map(tag => (
+
+              {uniqueTags.map((tag) => (
                 <button
                   key={tag}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors`}
                   style={{
-                    backgroundColor: activeTag === tag ? previewColors.primary : previewColors.card,
-                    color: activeTag === tag ? '#ffffff' : previewColors.secondary
+                    backgroundColor:
+                      activeTag === tag
+                        ? previewColors.primary
+                        : previewColors.card,
+                    color:
+                      activeTag === tag ? '#ffffff' : previewColors.secondary,
                   }}
                   onClick={() => setActiveTag(tag)}
                 >
@@ -540,9 +674,9 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
             </div>
           </div>
         )}
-        
+
         {filteredReferrals.length === 0 ? (
-          <div 
+          <div
             className="rounded-lg shadow-md p-8 text-center"
             style={{ backgroundColor: previewColors.card }}
           >
@@ -552,13 +686,15 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ referrals, currentUser, s
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredReferrals.map(referral => (
-              <ReferralCard 
+            {filteredReferrals.map((referral) => (
+              <ReferralCard
                 key={referral.id}
                 referral={referral}
                 onExpand={() => toggleExpand(referral.id)}
                 onCopy={() => handleCopyLink(referral.url)}
-                onEdit={() => isOwnProfile && !isGuestView && handleEditReferral(referral)}
+                onEdit={() =>
+                  isOwnProfile && !isGuestView && handleEditReferral(referral)
+                }
                 isAuthenticated={isOwnProfile && !isGuestView}
                 customColors={previewColors}
               />
