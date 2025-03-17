@@ -1,23 +1,12 @@
 import React, { useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { Link as LinkIcon, ArrowRight, ArrowLeft } from 'lucide-react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
 const PrivyAuth: React.FC = () => {
   const { login, authenticated, ready } = usePrivy();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const accessKey = queryParams.get('accessKey');
-
-    if (accessKey !== 'itskkomarefs') {
-      // Redirect to a different page if the access key is not present or incorrect
-      navigate('/unauthorized');
-    }
-  }, [location, navigate]);
 
   useEffect(() => {
     if (ready && authenticated) {
