@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { Link as LinkIcon, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,12 +7,20 @@ import ThemeToggle from './ThemeToggle';
 const PrivyAuth: React.FC = () => {
   const { login, authenticated, ready } = usePrivy();
   const navigate = useNavigate();
+  const [accessCode, setAccessCode] = useState('');
+  const [isAccessCodeValid, setIsAccessCodeValid] = useState(false);
 
   useEffect(() => {
     if (ready && authenticated) {
       navigate('/admin');
     }
   }, [ready, authenticated, navigate]);
+
+  const handleAccessCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const code = e.target.value;
+    setAccessCode(code);
+    setIsAccessCodeValid(code === 'referralfriends');
+  };
 
   if (!ready) {
     return (
@@ -78,9 +86,20 @@ const PrivyAuth: React.FC = () => {
               Sign in to manage your referral links and track your rewards.
             </p>
 
+            <input
+              type="text"
+              value={accessCode}
+              onChange={handleAccessCodeChange}
+              placeholder="Enter access code"
+              className="w-full mb-4 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+            />
+
             <button
               onClick={() => login()}
-              className="w-full py-3 bg-primary-light dark:bg-primary-dark hover:bg-opacity-90 text-white rounded-md font-medium transition-colors flex items-center justify-center gap-2"
+              disabled={!isAccessCodeValid}
+              className={`w-full py-3 bg-primary-light dark:bg-primary-dark hover:bg-opacity-90 text-white rounded-md font-medium transition-colors flex items-center justify-center gap-2 ${
+                !isAccessCodeValid ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
               <span>Sign In / Sign Up</span>
               <ArrowRight size={18} />
