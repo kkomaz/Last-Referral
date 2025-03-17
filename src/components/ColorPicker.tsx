@@ -23,44 +23,74 @@ interface ColorPickerProps {
   onReset: () => void;
 }
 
-const ColorPicker: React.FC<ColorPickerProps> = ({ colors: initialColors, onChange, onPreview, onReset }) => {
+const ColorPicker: React.FC<ColorPickerProps> = ({
+  colors: initialColors,
+  onChange,
+  onPreview,
+  onReset,
+}) => {
   const [colors, setColors] = useState(initialColors);
   const [isDirty, setIsDirty] = useState(false);
+  const [baseColors, setBaseColors] = useState(initialColors);
 
-  // Update local state when initialColors change
+  // Update colors when initialColors change, but preserve isDirty correctly
   useEffect(() => {
+    // Compare new initialColors with baseColors to determine if we should reset
+    const hasChangesFromBase = Object.keys(initialColors).some(
+      (key) => initialColors[key] !== baseColors[key]
+    );
+
+    // Update colors to match new initialColors
     setColors(initialColors);
-    setIsDirty(false);
+
+    // If initialColors differ from baseColors, don't reset isDirty
+    // Only reset isDirty if they're the same (e.g., after a save or reset)
+    if (!hasChangesFromBase) {
+      console.log('::no changes from base, resetting isDirty');
+      setIsDirty(false);
+    } else {
+      console.log('::changes detected from base, preserving isDirty');
+    }
+
+    // Always update baseColors to match new initialColors
+    setBaseColors(initialColors);
   }, [initialColors]);
 
   const handleColorChange = (key: keyof typeof colors, value: string) => {
     const newColors = {
       ...colors,
-      [key]: value
+      [key]: value,
     };
     setColors(newColors);
-    setIsDirty(true);
+
+    // Check if the new colors differ from baseColors
+    const hasChanges = Object.keys(newColors).some(
+      (k) => newColors[k] !== baseColors[k]
+    );
+    setIsDirty(hasChanges);
     onPreview(newColors);
   };
 
   const handleSave = () => {
     onChange(colors);
+    setBaseColors(colors); // Update baseColors after saving
     setIsDirty(false);
   };
 
   const handleReset = () => {
-    setColors(initialColors);
+    setColors(baseColors);
     setIsDirty(false);
-    onPreview(initialColors);
+    onPreview(baseColors);
     onReset();
   };
 
   const handleCancel = () => {
-    setColors(initialColors);
+    setColors(baseColors);
     setIsDirty(false);
-    onPreview(initialColors);
+    onPreview(baseColors);
   };
 
+  // Rest of the JSX remains unchanged
   return (
     <div className="p-4 rounded-lg border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
       <div className="flex justify-between items-center mb-4">
@@ -189,19 +219,19 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ colors: initialColors, onChan
         <div className="text-xs font-medium text-text-light dark:text-text-dark mb-2">
           Preview
         </div>
-        <div 
+        <div
           className="p-4 rounded-lg"
           style={{ backgroundColor: colors.body }}
         >
-          <div 
+          <div
             className="p-4 rounded-lg mb-2"
             style={{ backgroundColor: colors.card }}
           >
-            <div 
+            <div
               className="h-6 w-24 rounded mb-2"
               style={{ backgroundColor: colors.primary }}
             />
-            <div 
+            <div
               className="h-3 w-32 rounded"
               style={{ backgroundColor: colors.secondary }}
             />
