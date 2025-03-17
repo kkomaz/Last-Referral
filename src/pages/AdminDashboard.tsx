@@ -19,9 +19,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [activeView, setActiveView] = useState<string>(
-    location.pathname.includes('settings') ? 'settings' : 
-    location.pathname.includes('subscriptions') ? 'subscriptions' : 
-    'dashboard'
+    location.pathname.includes('settings')
+      ? 'settings'
+      : location.pathname.includes('subscriptions')
+      ? 'subscriptions'
+      : 'dashboard'
   );
 
   const handleNavigation = (path: string, view: string) => {
@@ -34,27 +36,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       icon: <User size={20} />,
       label: 'View Public Profile',
       onClick: () => navigate(`/${currentUser.username}`),
-      view: 'profile'
+      view: 'profile',
     },
     {
       icon: <Settings size={20} />,
       label: 'Update Profile',
       onClick: () => handleNavigation('/admin/settings', 'settings'),
-      view: 'settings'
+      view: 'settings',
     },
-    {
-      icon: <CreditCard size={20} />,
-      label: 'My Subscriptions',
-      onClick: () => handleNavigation('/admin/subscriptions', 'subscriptions'),
-      view: 'subscriptions'
-    },
+    // {
+    //   icon: <CreditCard size={20} />,
+    //   label: 'My Subscriptions',
+    //   onClick: () => handleNavigation('/admin/subscriptions', 'subscriptions'),
+    //   view: 'subscriptions'
+    // },
   ];
 
   const renderContent = () => {
     switch (activeView) {
       case 'settings':
         return (
-          <SettingsPage 
+          <SettingsPage
             currentUser={currentUser}
             onProfileUpdate={onProfileUpdate}
             embedded={true}
@@ -105,9 +107,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       {/* Main Content */}
       <div className="flex-1 bg-background-light dark:bg-background-dark overflow-auto">
-        <div className="max-w-6xl mx-auto">
-          {renderContent()}
-        </div>
+        <div className="max-w-6xl mx-auto">{renderContent()}</div>
       </div>
     </div>
   );
