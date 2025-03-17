@@ -21,10 +21,17 @@ import { ReferralData, UserProfile } from './types';
 import { supabase, setPrivyAuthForSupabase } from './lib/supabase';
 
 // Helper component to conditionally render header
-const HeaderWrapper = ({ currentUser }: { currentUser: UserProfile | null }) => {
+const HeaderWrapper = ({
+  currentUser,
+}: {
+  currentUser: UserProfile | null;
+}) => {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/settings') || location.pathname.startsWith('/super-admin');
-  
+  const isAdminRoute =
+    location.pathname.startsWith('/admin') ||
+    location.pathname.startsWith('/settings') ||
+    location.pathname.startsWith('/super-admin');
+
   if (!isAdminRoute) return null;
   return <Header currentUser={currentUser} />;
 };
@@ -45,7 +52,7 @@ function App() {
       try {
         // Get the Privy JWT token
         const privyToken = await getAccessToken();
-        
+
         if (!privyToken) {
           console.warn('No Privy token available');
           return;
@@ -53,7 +60,7 @@ function App() {
 
         // Set up Supabase with Privy token
         const success = await setPrivyAuthForSupabase(privyToken);
-        
+
         if (success) {
           // After setting auth, fetch the user profile
           await fetchUserProfile();
@@ -92,7 +99,9 @@ function App() {
         const userProfile: UserProfile = {
           id: profile.id,
           username: profile.username || '',
-          bio: profile.bio || 'Tech enthusiast sharing my favorite products and services.',
+          bio:
+            profile.bio ||
+            'Tech enthusiast sharing my favorite products and services.',
           avatarUrl: profile.avatar_url || '',
           email: profile.email || '',
           primaryColor: profile.primary_color || '#7b68ee',
@@ -108,7 +117,7 @@ function App() {
           tier: profile.tier,
           maxReferrals: profile.max_referrals,
           maxTags: profile.max_tags,
-          is_admin: profile.is_admin
+          is_admin: profile.is_admin,
         };
         setCurrentUser(userProfile);
         setHasUsername(!!profile.username);
@@ -132,10 +141,11 @@ function App() {
 
       try {
         console.log('Fetching referrals for user:', currentUser.id);
-        
+
         const { data, error } = await supabase
           .from('referrals')
-          .select(`
+          .select(
+            `
             *,
             referral_tags (
               tag: tags (
@@ -143,7 +153,8 @@ function App() {
                 name
               )
             )
-          `)
+          `
+          )
           .eq('user_id', currentUser.id)
           .order('created_at', { ascending: false });
 
@@ -165,9 +176,9 @@ function App() {
             isExpanded: false,
             userId: item.user_id,
             tags: item.referral_tags
-              .map(rt => rt.tag)
+              .map((rt) => rt.tag)
               .filter(Boolean)
-              .sort((a, b) => a.name.localeCompare(b.name))
+              .sort((a, b) => a.name.localeCompare(b.name)),
           }));
 
           console.log('Setting referrals:', transformedData);
@@ -208,13 +219,17 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
-        {authenticated && currentUser && <HeaderWrapper currentUser={currentUser} />}
+        {authenticated && currentUser && (
+          <HeaderWrapper currentUser={currentUser} />
+        )}
 
         <div className="flex-grow">
           <Routes>
-            <Route 
-              path="/" 
-              element={authenticated ? <Navigate to="/admin" /> : <LandingPage />} 
+            <Route
+              path="/"
+              element={
+                authenticated ? <Navigate to="/admin" /> : <LandingPage />
+              }
             />
             <Route path="/login" element={<PrivyAuth />} />
             <Route
@@ -239,7 +254,7 @@ function App() {
               path="/settings"
               element={
                 authenticated && hasUsername ? (
-                  <Settings 
+                  <Settings
                     currentUser={currentUser!}
                     onProfileUpdate={handleProfileUpdate}
                   />
@@ -272,9 +287,11 @@ function App() {
               path="/success"
               element={
                 authenticated && currentUser ? (
+                  // <div>Hello</div>
                   <SuccessPage userId={currentUser.id} />
                 ) : (
-                  <Navigate to="/login" />
+                  <div>Hello NAVIGATE</div>
+                  // <Navigate to="/login" />
                 )
               }
             />

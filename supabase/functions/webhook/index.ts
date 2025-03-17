@@ -20,7 +20,8 @@ serve(async (req) => {
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(
+      // Use the async method instead of the sync one
+      event = await stripe.webhooks.constructEventAsync(
         body,
         signature,
         endpointSecret!
@@ -31,23 +32,29 @@ serve(async (req) => {
 
     // Handle the event
     if (event.type === 'checkout.session.completed') {
-      const session = event.data.object;
-      const userId = session.metadata.userId;
-
-      // Create Supabase client
+      const userId = event.data.object.metadata.userId;
+      console.log(`Upgrading user: ${userId}`);
       const supabaseClient = createClient(
         Deno.env.get('SUPABASE_URL') || '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
       );
-
-      // Upgrade user to premium
-      const { error } = await supabaseClient.rpc('upgrade_to_premium', {
-        user_id: userId
-      });
-
+      console.log('Supabase client initialized');
+      console.log('Updating profile directly');
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .update({
+          tier: 'premium',
+          max_referrals: 100,
+          max_tags: 50,
+          updated_at: new Date(),
+        })
+        .eq('id', userId)
+        .select();
       if (error) {
-        throw error;
+        console.error(`Update error: ${error.message}`);
+        throw new Error(`Update failed: ${error.message}`);
       }
+      console.log(`Update success: ${JSON.stringify(data)}`);
     }
 
     return new Response(JSON.stringify({ received: true }), {
@@ -55,12 +62,9 @@ serve(async (req) => {
       status: 200,
     });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { 
-        headers: { 'Content-Type': 'application/json' },
-        status: 400,
-      }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { 'Content-Type': 'application/json' },
+      status: 400,
+    });
   }
 });

@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "supabase:push": "npx supabase db push"
+    "supabase:push": "npx supabase db push",
+    "stripe:complete": "stripe trigger checkout.session.completed"
   },
   "dependencies": {
     "@privy-io/react-auth": "^1.52.2",
