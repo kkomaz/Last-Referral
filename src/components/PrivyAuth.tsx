@@ -69,7 +69,7 @@ const PrivyAuth: React.FC = () => {
                   className="text-primary-light dark:text-primary-dark"
                 />
                 <span className="text-xl font-bold text-text-light dark:text-text-dark">
-                  ReferralTree
+                  EasyRef
                 </span>
               </Link>
             </div>
@@ -140,7 +140,7 @@ const PrivyAuth: React.FC = () => {
             </h2>
             <p className="text-xl text-muted-light dark:text-muted-dark max-w-2xl mx-auto">
               Join thousands of creators sharing their favorite products and
-              earning rewards through ReferralTree.
+              earning rewards through EasyRef.
             </p>
           </div>
 

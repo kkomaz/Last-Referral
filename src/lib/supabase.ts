@@ -9,18 +9,18 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,
   },
   global: {
     headers: {
-      'X-Client-Info': 'referraltree',
+      'X-Client-Info': 'easyref',
       'Content-Type': 'application/json',
-      'Prefer': 'return=representation'  // This ensures we get the updated record back
-    }
+      Prefer: 'return=representation', // This ensures we get the updated record back
+    },
   },
   db: {
-    schema: 'public'
-  }
+    schema: 'public',
+  },
 });
 
 // Helper function to decode JWT without external libraries
@@ -31,7 +31,7 @@ const decodeJWT = (token: string) => {
     const jsonPayload = decodeURIComponent(
       atob(base64)
         .split('')
-        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
     );
     return JSON.parse(jsonPayload);
@@ -56,7 +56,8 @@ export const setPrivyAuthForSupabase = async (privyToken: string) => {
     // Test the authentication
     const { data: authTest, error: authError } = await supabase
       .from('profiles')
-      .select(`
+      .select(
+        `
         id,
         privy_id,
         username,
@@ -70,15 +71,16 @@ export const setPrivyAuthForSupabase = async (privyToken: string) => {
         instagram,
         linkedin,
         website
-      `)
+      `
+      )
       .limit(1)
       .maybeSingle();
-      
+
     if (authError) {
       console.error('Auth test failed:', authError);
       return false;
     }
-    
+
     console.log('Auth test successful:', authTest);
     return true;
   } catch (error) {

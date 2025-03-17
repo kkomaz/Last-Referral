@@ -145,7 +145,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   // Function to update meta tags
   const updateMetaTags = (profile: UserProfile) => {
     // Update title
-    document.title = `${profile.username} on ReferralTree`;
+    document.title = `${profile.username} on EasyRef`;
 
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -162,18 +162,15 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
     const ogUrl = document.querySelector('meta[property="og:url"]');
 
     if (ogTitle)
-      ogTitle.setAttribute('content', `${profile.username} on ReferralTree`);
+      ogTitle.setAttribute('content', `${profile.username} on EasyRef`);
     if (ogDescription) ogDescription.setAttribute('content', profile.bio);
     if (ogImage)
       ogImage.setAttribute(
         'content',
-        profile.avatarUrl || 'https://referraltree.com/default-og-image.jpg'
+        profile.avatarUrl || 'https://easyref.com/default-og-image.jpg'
       );
     if (ogUrl)
-      ogUrl.setAttribute(
-        'content',
-        `https://referraltree.com/${profile.username}`
-      );
+      ogUrl.setAttribute('content', `https://easyref.com/${profile.username}`);
 
     // Update Twitter meta tags
     const twitterTitle = document.querySelector(
@@ -188,21 +185,18 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
     const twitterUrl = document.querySelector('meta[property="twitter:url"]');
 
     if (twitterTitle)
-      twitterTitle.setAttribute(
-        'content',
-        `${profile.username} on ReferralTree`
-      );
+      twitterTitle.setAttribute('content', `${profile.username} on EasyRef`);
     if (twitterDescription)
       twitterDescription.setAttribute('content', profile.bio);
     if (twitterImage)
       twitterImage.setAttribute(
         'content',
-        profile.avatarUrl || 'https://referraltree.com/default-og-image.jpg'
+        profile.avatarUrl || 'https://easyref.com/default-og-image.jpg'
       );
     if (twitterUrl)
       twitterUrl.setAttribute(
         'content',
-        `https://referraltree.com/${profile.username}`
+        `https://easyref.com/${profile.username}`
       );
   };
 
@@ -210,7 +204,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   useEffect(() => {
     return () => {
       // Reset meta tags to default values
-      document.title = 'ReferralTree - Share Your Favorite Products';
+      document.title = 'EasyRef - Share Your Favorite Products';
 
       const metaDescription = document.querySelector(
         'meta[name="description"]'
@@ -218,7 +212,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       if (metaDescription) {
         metaDescription.setAttribute(
           'content',
-          'Share your favorite products and services, track referrals, and earn rewards with ReferralTree.'
+          'Share your favorite products and services, track referrals, and earn rewards with EasyRef.'
         );
       }
 
@@ -230,7 +224,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       const ogImage = document.querySelector('meta[property="og:image"]');
       const ogUrl = document.querySelector('meta[property="og:url"]');
 
-      if (ogTitle) ogTitle.setAttribute('content', 'ReferralTree');
+      if (ogTitle) ogTitle.setAttribute('content', 'EasyRef');
       if (ogDescription)
         ogDescription.setAttribute(
           'content',
@@ -239,9 +233,9 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       if (ogImage)
         ogImage.setAttribute(
           'content',
-          'https://referraltree.com/default-og-image.jpg'
+          'https://easyref.com/default-og-image.jpg'
         );
-      if (ogUrl) ogUrl.setAttribute('content', 'https://referraltree.com');
+      if (ogUrl) ogUrl.setAttribute('content', 'https://easyref.com');
 
       // Reset Twitter meta tags
       const twitterTitle = document.querySelector(
@@ -255,7 +249,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       );
       const twitterUrl = document.querySelector('meta[property="twitter:url"]');
 
-      if (twitterTitle) twitterTitle.setAttribute('content', 'ReferralTree');
+      if (twitterTitle) twitterTitle.setAttribute('content', 'EasyRef');
       if (twitterDescription)
         twitterDescription.setAttribute(
           'content',
@@ -264,10 +258,9 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       if (twitterImage)
         twitterImage.setAttribute(
           'content',
-          'https://referraltree.com/default-og-image.jpg'
+          'https://easyref.com/default-og-image.jpg'
         );
-      if (twitterUrl)
-        twitterUrl.setAttribute('content', 'https://referraltree.com');
+      if (twitterUrl) twitterUrl.setAttribute('content', 'https://easyref.com');
     };
   }, []);
 

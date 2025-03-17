@@ -1,5 +1,5 @@
 /*
-  # Create tags tables for ReferralTree
+  # Create tags tables for EasyRef
 
   1. New Tables
     - `tags`

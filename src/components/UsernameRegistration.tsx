@@ -119,7 +119,9 @@ const UsernameRegistration: React.FC<UsernameRegistrationProps> = ({
       const userProfile = {
         id: fullProfile.id,
         username: fullProfile.username || '',
-        bio: fullProfile.bio || 'Tech enthusiast sharing my favorite products and services.',
+        bio:
+          fullProfile.bio ||
+          'Tech enthusiast sharing my favorite products and services.',
         avatarUrl: fullProfile.avatar_url || '',
         socialLinks: {
           twitter: fullProfile.twitter || '',
@@ -134,7 +136,6 @@ const UsernameRegistration: React.FC<UsernameRegistrationProps> = ({
 
       // Force a refresh of the Supabase client
       await supabase.auth.refreshSession();
-
     } catch (err) {
       console.error('Error in handleSubmit:', err);
       setError('An unexpected error occurred');
@@ -180,7 +181,7 @@ const UsernameRegistration: React.FC<UsernameRegistrationProps> = ({
       <p className="text-muted-light dark:text-muted-dark mb-6">
         This will be your unique URL:{' '}
         <span className="font-medium">
-          referraltree.com/{username || 'username'}
+          easyref.com/{username || 'username'}
         </span>
         <br />
         <span className="text-sm text-red-500 dark:text-red-400 font-medium">
@@ -267,7 +268,7 @@ const UsernameRegistration: React.FC<UsernameRegistrationProps> = ({
               className="text-primary-light dark:text-primary-dark"
             />
             <span className="text-xl font-bold text-text-light dark:text-text-dark">
-              ReferralTree
+              EasyRef
             </span>
           </Link>
           <ThemeToggle />

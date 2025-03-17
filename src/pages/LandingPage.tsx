@@ -29,7 +29,7 @@ const LandingPage: React.FC = () => {
                 className="text-primary-light dark:text-primary-dark"
               />
               <span className="text-xl font-bold text-text-light dark:text-text-dark">
-                ReferralTree
+                EasyRef
               </span>
             </Link>
             <div className="flex items-center gap-4">
@@ -102,11 +102,11 @@ const LandingPage: React.FC = () => {
                 className="text-primary-light dark:text-primary-dark"
               />
               <span className="text-sm font-medium text-text-light dark:text-text-dark">
-                ReferralTree
+                EasyRef
               </span>
             </div>
             <p className="text-sm text-muted-light dark:text-muted-dark">
-              © {new Date().getFullYear()} ReferralTree. All rights reserved.
+              © {new Date().getFullYear()} EasyRef. All rights reserved.
             </p>
           </div>
         </div>

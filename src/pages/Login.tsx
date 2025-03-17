@@ -40,9 +40,7 @@ const Login: React.FC = () => {
         <div className="container mx-auto px-4 flex items-center">
           <Link to="/" className="flex items-center gap-2">
             <LinkIcon size={24} className="text-[#7b68ee]" />
-            <span className="text-xl font-bold text-[#2b2d42]">
-              ReferralTree
-            </span>
+            <span className="text-xl font-bold text-[#2b2d42]">EasyRef</span>
           </Link>
         </div>
       </header>
@@ -50,7 +48,7 @@ const Login: React.FC = () => {
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
           <h1 className="text-2xl font-bold text-center text-[#2b2d42] mb-6">
-            Welcome to ReferralTree
+            Welcome to EasyRef
           </h1>
 
           <p className="text-gray-600 text-center mb-8">
@@ -137,7 +135,7 @@ const Login: React.FC = () => {
 
       <footer className="py-6 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4 text-center text-gray-500">
-          <p>© {new Date().getFullYear()} ReferralTree. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} EasyRef. All rights reserved.</p>
         </div>
       </footer>
     </div>

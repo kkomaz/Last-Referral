@@ -1,5 +1,5 @@
 /*
-  # Initial schema setup for ReferralTree
+  # Initial schema setup for EasyRef
 
   1. New Tables
     - `profiles`
