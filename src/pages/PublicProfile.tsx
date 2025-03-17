@@ -588,7 +588,10 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
                 </button>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => setShowReferralModal(true)}
+                    onClick={() => {
+                      setEditingReferral(null); // Reset editing state
+                      setShowReferralModal(true);
+                    }}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-md bg-primary-light dark:bg-primary-dark text-white hover:bg-opacity-90 transition-colors text-sm"
                   >
                     <Plus size={16} />
@@ -728,7 +731,10 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
         <>
           <ReferralModal
             isOpen={showReferralModal}
-            onClose={() => setShowReferralModal(false)}
+            onClose={() => {
+              setShowReferralModal(false);
+              setEditingReferral(null); // Reset editing state when closing modal
+            }}
             onSave={handleReferralSave}
             userId={profile.id}
             editingReferral={editingReferral || undefined}
